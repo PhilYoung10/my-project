@@ -1,14 +1,29 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <router-view/>
+    <helloVue></helloVue>
+<!--    <router-view/>-->
+    <dataRelate></dataRelate>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+  // 导入组件
+
+  import HelloVue from './components/HelloVue'
+  import DataRelate from './components/DataRelate'
+  export default {
+    name: 'app',
+    components: {
+      HelloVue,
+      DataRelate
+    }
+  }
+
+
+// export default {
+//   name: 'App'
+// }
 </script>
 
 <style>
