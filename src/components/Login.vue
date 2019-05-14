@@ -1,16 +1,21 @@
 <template>
-    <div class="helloVue">
+    <div class="login">
         <h1>{{ msg }}</h1>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'helloVue',
+        name: 'login',
         data() {
             return {
-                msg: 'Hello,Vue!'
+                msg: '请登录！'
             }
-        }
+        },
+    method:{
+          loginStatus:function () {
+            return 1;
+          }
+    }
     }
 </script>

@@ -21,13 +21,13 @@
           <img src="/static/icon/search_127.65957446809px_1138927_easyicon.net.png">
           <p>查询设备</p>
         </div>
-        <div id="cabinetLayout" class="function">
+        <div id="cabinetLayout" class=  "function">
           <img src="/static/icon/software_layout_header_columns_128.48301886792px_1183030_easyicon.net.png">
           <p>机柜布局图</p>
         </div>
       </div>
       <div v-else>
-        <p>请登录！</p>
+        <login></login>
       </div>
     </div>
   </div>
@@ -45,12 +45,16 @@
   //   }
   // }
 
+  import Login from'./components/Login'
   export default {
     name: 'app',
     data() {
       return {
-        isLogin: false
+        isLogin: Login.loginStatus()
       }
+    },
+    components:{
+      Login
     }
   }
 </script>
