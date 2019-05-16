@@ -9,9 +9,11 @@
       <div v-if="isLogin">
         <div class="logout">
           <p style="display: inline-block">{{user.userName}}</p>
-          <button v-on:click="logout">退出登录</button>
+<!--          <img src="static/icon/wulumuqishigongandashujuguanlipingtai-ico-.png">-->
+          <Button v-on:click="logout" type="error" size="small">退出登录</Button>
         </div>
         <div class="functionMenu">
+          <Divider>功能菜单</Divider>
           <div id="addProperty" class="function"  v-on:click="addProperty">
             <img src="/static/icon/plus_128px_1160196_easyicon.net.png">
             <p>增加设备</p>
@@ -28,14 +30,32 @@
       </div>
       <div v-else>
         <div class="login">
+          <Divider>请登录</Divider>
+
+          <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
+            <FormItem prop="user">
+              <Input type="text" v-model="formInline.user" placeholder="Username">
+              <Icon type="ios-person-outline" slot="prepend"></Icon>
+              </Input>
+            </FormItem>
+            <FormItem prop="password">
+              <Input type="password" v-model="formInline.password" placeholder="Password">
+              <Icon type="ios-lock-outline" slot="prepend"></Icon>
+              </Input>
+            </FormItem>
+            <br/>
+            <FormItem>
+              <Button type="primary" @click="handleSubmit('formInline')">Signin</Button>
+            </FormItem>
+          </Form>
+
           <div class="loginForm">
-            <label for="userName">用户名:</label>
-            <input v-model="user.userName" id="userName" placeholder="用户名">
-            <br/>
-            <label for="password">密&emsp;码:</label>
-            <input v-model="user.password" type="password" id="password" placeholder="密码" v-on:keyup.enter="login">
-            <br/>
-            <button v-on:click="login">登录</button>
+            <Input v-model="user.userName" id="userName" placeholder="用户名">
+            <span slot="prepend">用户名:</span>
+            <span slot="append">@aviva-cofco.com.cn</span>
+            </Input>
+            <Input type="password" v-model="user.password" id="password" placeholder="密码" v-on:keyup.enter="login" style="margin-top: 10px"/>
+            <Button v-on:click="login" type="primary" size="small" style="margin-top: 10px">登录</Button>
           </div>
         </div>
       </div>
@@ -55,11 +75,35 @@
           password: "password",
           status: "0"
         },
-        isLogin: Global.loginStatus
+        isLogin: Global.loginStatus,
+
+        formInline: {
+          user: '',
+          password: ''
+        },
+        ruleInline: {
+          user: [
+            { required: true, message: 'Please fill in the user name', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: 'Please fill in the password.', trigger: 'blur' },
+            { type: 'string', min: 6, message: 'The password length cannot be less than 6 bits', trigger: 'blur' }
+          ]
+        }
       }
     },
     components: {},
     methods: {
+      handleSubmit(name) {
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            this.$Message.success('Success!');
+          } else {
+            this.$Message.error('Fail!');
+          }
+        })
+      },
+
       login: function () {
         this.user.status = "1";
         Global.loginStatus = 1;
@@ -100,7 +144,7 @@
   }
 
   .systemName {
-    color: #371250;
+    color: #371250  ;
     font-size: 40px;
   }
 
@@ -119,8 +163,8 @@
     width: 300px;
     left: calc(50% - 150px);
     margin-top: 20px;
-    padding: 20px 0 20px 0;
-    border: solid #371250;
-    border-radius: 5px;
+    /*padding: 20px;*/
+    /*border: solid #371250;*/
+    /*border-radius: 5px;*/
   }
 </style>
