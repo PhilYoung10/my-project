@@ -1,170 +1,114 @@
+<style scoped>
+  .layout {
+    border: 1px solid #d7dde4;
+    background: #f5f7f9;
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .layout-header-bar {
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+  }
+
+  .layout-logo {
+    width: 100px;
+    height: 30px;
+    background: #5b6270;
+    border-radius: 3px;
+    float: left;
+    position: relative;
+    top: 15px;
+  }
+
+  .layout-user {
+    /*position: relative;*/
+    /*top: 15px;*/
+    height: 30px;
+    float: right;
+  }
+  .menu-item span {
+    display: inline-block;
+    overflow: hidden;
+    width: 69px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+    transition: width .2s ease .2s;
+  }
+
+  .menu-item i {
+    transform: translateX(0px);
+    transition: font-size .2s ease, transform .2s ease;
+    vertical-align: middle;
+    font-size: 16px;
+  }
+
+  .collapsed-menu span {
+    width: 0px;
+    transition: width .2s ease;
+  }
+
+  .collapsed-menu i {
+    transform: translateX(5px);
+    transition: font-size .2s ease .2s, transform .2s ease .2s;
+    vertical-align: middle;
+    font-size: 22px;
+  }
+</style>
 <template>
-
-  <div id="app" class="container">
-    <div class="head">
-      <img id="companyLogo" src="/static/icon/Logo%20(1).png">
-      <p class="systemName">资产管理系统</p>
-    </div>
-    <div class="main">
-      <div v-if="isLogin">
-        <div class="logout">
-          <p style="display: inline-block">{{user.userName}}</p>
-<!--          <img src="static/icon/wulumuqishigongandashujuguanlipingtai-ico-.png">-->
-          <Button v-on:click="logout" type="error" size="small">退出登录</Button>
-        </div>
-        <div class="functionMenu">
-          <Divider>功能菜单</Divider>
-          <div id="addProperty" class="function"  v-on:click="addProperty">
-            <img src="/static/icon/plus_128px_1160196_easyicon.net.png">
-            <p>增加设备</p>
+  <div class="layout">
+    <Layout>
+      <Sider breakpoint="md" collapsible :collapsed-width="78" v-model="isCollapsed">
+        <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
+          <MenuItem name="1-1">
+            <Icon type="ios-navigate"></Icon>
+            <span>Option 1</span>
+          </MenuItem>
+          <MenuItem name="1-2">
+            <Icon type="ios-search"></Icon>
+            <span>Option 2</span>
+          </MenuItem>
+          <MenuItem name="1-3">
+            <Icon type="ios-settings"></Icon>
+            <span>Option 3</span>
+          </MenuItem>
+        </Menu>
+        <div slot="trigger"></div>
+      </Sider>
+      <Layout>
+        <Header class="layout-header-bar">
+          <div v-if="isCollapsed" class="layout-logo"></div>
+          <div class="layout-user">
+            <Icon type="ios-contact" size="30"/>
+            {{user.userName}}
           </div>
-          <div id="queryProperty" class="function"  v-on:click="queryProperty">
-            <img src="/static/icon/search_127.65957446809px_1138927_easyicon.net.png">
-            <p>查询设备</p>
-          </div>
-          <div id="cabinetLayout" class="function"  v-on:click="cabinetLayout">
-            <img src="/static/icon/software_layout_header_columns_128.48301886792px_1183030_easyicon.net.png">
-            <p>机柜布局图</p>
-          </div>
-        </div>
-      </div>
-      <div v-else>
-        <div class="login">
-          <Divider>请登录</Divider>
-
-          <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
-            <FormItem prop="user">
-              <Input type="text" v-model="formInline.user" placeholder="Username">
-              <Icon type="ios-person-outline" slot="prepend"></Icon>
-              </Input>
-            </FormItem>
-            <FormItem prop="password">
-              <Input type="password" v-model="formInline.password" placeholder="Password">
-              <Icon type="ios-lock-outline" slot="prepend"></Icon>
-              </Input>
-            </FormItem>
-            <br/>
-            <FormItem>
-              <Button type="primary" @click="handleSubmit('formInline')">Signin</Button>
-            </FormItem>
-          </Form>
-
-          <div class="loginForm">
-            <Input v-model="user.userName" id="userName" placeholder="用户名">
-            <span slot="prepend">用户名:</span>
-            <span slot="append">@aviva-cofco.com.cn</span>
-            </Input>
-            <Input type="password" v-model="user.password" id="password" placeholder="密码" v-on:keyup.enter="login" style="margin-top: 10px"/>
-            <Button v-on:click="login" type="primary" size="small" style="margin-top: 10px">登录</Button>
-          </div>
-        </div>
-      </div>
-    </div>
+        </Header>
+        <Content :style="{margin: '20px', background: '#fff', minHeight: '2200px'}">
+          Content
+        </Content>
+      </Layout>
+    </Layout>
   </div>
 </template>
-
 <script>
-  import Global from './global'
-
   export default {
-    name: 'app',
     data() {
       return {
-        user: {
-          userName: "Phil_Yang",
-          password: "password",
-          status: "0"
-        },
-        isLogin: Global.loginStatus,
-
-        formInline: {
-          user: '',
-          password: ''
-        },
-        ruleInline: {
-          user: [
-            { required: true, message: 'Please fill in the user name', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: 'Please fill in the password.', trigger: 'blur' },
-            { type: 'string', min: 6, message: 'The password length cannot be less than 6 bits', trigger: 'blur' }
-          ]
+        isCollapsed: false,
+        user:{
+          userName: "Phil_Yang"
         }
-      }
+      };
     },
-    components: {},
-    methods: {
-      handleSubmit(name) {
-        this.$refs[name].validate((valid) => {
-          if (valid) {
-            this.$Message.success('Success!');
-          } else {
-            this.$Message.error('Fail!');
-          }
-        })
-      },
-
-      login: function () {
-        this.user.status = "1";
-        Global.loginStatus = 1;
-        this.isLogin = 1;
-      },
-      logout:function () {
-        this.user.status = "0";
-        Global.loginStatus = 0;
-        this.isLogin = 0;
-      },
-      addProperty: function () {
-
-      },
-      queryProperty: function () {
-        
-      },
-      cabinetLayout: function () {
-
+    computed: {
+      menuitemClasses: function () {
+        return [
+          'menu-item',
+          this.isCollapsed ? 'collapsed-menu' : ''
+        ]
       }
     }
   }
 </script>
-
-<style>
-  .container {
-    text-align: center;
-  }
-
-  img {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  .head {
-    width: 100%;
-  }
-
-  .systemName {
-    color: #371250  ;
-    font-size: 40px;
-  }
-
-  #companyLogo {
-    width: 400px;
-    margin-top: 30px;
-  }
-
-  .function {
-    display: inline-block;
-    padding: 20px;
-  }
-
-  .loginForm {
-    position: relative;
-    width: 300px;
-    left: calc(50% - 150px);
-    margin-top: 20px;
-    /*padding: 20px;*/
-    /*border: solid #371250;*/
-    /*border-radius: 5px;*/
-  }
-</style>
