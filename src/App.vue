@@ -9,20 +9,20 @@
       <div v-if="isLogin">
         <div class="logout">
           <p style="display: inline-block">{{user.userName}}</p>
-<!--          <img src="static/icon/wulumuqishigongandashujuguanlipingtai-ico-.png">-->
+          <!--          <img src="static/icon/wulumuqishigongandashujuguanlipingtai-ico-.png">-->
           <Button v-on:click="logout" type="error" size="small">退出登录</Button>
         </div>
         <div class="functionMenu">
           <Divider>功能菜单</Divider>
-          <div id="addProperty" class="function"  v-on:click="addProperty">
+          <div id="addProperty" class="function" v-on:click="addProperty">
             <img src="/static/icon/plus_128px_1160196_easyicon.net.png">
             <p>增加设备</p>
           </div>
-          <div id="queryProperty" class="function"  v-on:click="queryProperty">
+          <div id="queryProperty" class="function" v-on:click="queryProperty">
             <img src="/static/icon/search_127.65957446809px_1138927_easyicon.net.png">
             <p>查询设备</p>
           </div>
-          <div id="cabinetLayout" class="function"  v-on:click="cabinetLayout">
+          <div id="cabinetLayout" class="function" v-on:click="cabinetLayout">
             <img src="/static/icon/software_layout_header_columns_128.48301886792px_1183030_easyicon.net.png">
             <p>机柜布局图</p>
           </div>
@@ -32,31 +32,31 @@
         <div class="login">
           <Divider>请登录</Divider>
 
-          <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
+          <Form ref="user" :model="user" :rules="ruleInline" inline>
             <FormItem prop="user">
-              <Input type="text" v-model="formInline.user" placeholder="Username">
+              <Input type="text" v-model="user.userName" placeholder="Username">
               <Icon type="ios-person-outline" slot="prepend"></Icon>
               </Input>
             </FormItem>
             <FormItem prop="password">
-              <Input type="password" v-model="formInline.password" placeholder="Password">
+              <Input type="password" v-model="user.password" placeholder="Password">
               <Icon type="ios-lock-outline" slot="prepend"></Icon>
               </Input>
             </FormItem>
             <br/>
             <FormItem>
-              <Button type="primary" @click="handleSubmit('formInline')">Signin</Button>
+              <Button type="primary" @click="login">SignIn</Button>
             </FormItem>
           </Form>
 
-          <div class="loginForm">
-            <Input v-model="user.userName" id="userName" placeholder="用户名">
-            <span slot="prepend">用户名:</span>
-            <span slot="append">@aviva-cofco.com.cn</span>
-            </Input>
-            <Input type="password" v-model="user.password" id="password" placeholder="密码" v-on:keyup.enter="login" style="margin-top: 10px"/>
-            <Button v-on:click="login" type="primary" size="small" style="margin-top: 10px">登录</Button>
-          </div>
+          <!--          <div class="loginForm">-->
+          <!--            <Input v-model="user.userName" id="userName" placeholder="用户名">-->
+          <!--            <span slot="prepend">用户名:</span>-->
+          <!--            <span slot="append">@aviva-cofco.com.cn</span>-->
+          <!--            </Input>-->
+          <!--            <Input type="password" v-model="user.password" id="password" placeholder="密码" v-on:keyup.enter="login" style="margin-top: 10px"/>-->
+          <!--            <Button v-on:click="login" type="primary" size="small" style="margin-top: 10px">登录</Button>-->
+          <!--          </div>-->
         </div>
       </div>
     </div>
@@ -73,43 +73,43 @@
         user: {
           userName: "Phil_Yang",
           password: "password",
-          status: "0"
+          // status: "0"
         },
         isLogin: Global.loginStatus,
 
-        formInline: {
-          user: '',
-          password: ''
-        },
+        // formInline: {
+        //   user: '',
+        //   password: ''
+        // },
         ruleInline: {
           user: [
-            { required: true, message: 'Please fill in the user name', trigger: 'blur' }
+            {required: true, message: 'Please fill in the user name', trigger: 'blur'}
           ],
           password: [
-            { required: true, message: 'Please fill in the password.', trigger: 'blur' },
-            { type: 'string', min: 6, message: 'The password length cannot be less than 6 bits', trigger: 'blur' }
+            {required: true, message: 'Please fill in the password.', trigger: 'blur'},
+            {type: 'string', min: 6, message: 'The password length cannot be less than 6 bits', trigger: 'blur'}
           ]
         }
       }
     },
     components: {},
     methods: {
-      handleSubmit(name) {
-        this.$refs[name].validate((valid) => {
-          if (valid) {
-            this.$Message.success('Success!');
-          } else {
-            this.$Message.error('Fail!');
-          }
-        })
-      },
+      // handleSubmit(name) {
+      //   this.$refs[name].validate((valid) => {
+      //     if (valid) {
+      //       this.$Message.success('Success!');
+      //     } else {
+      //       this.$Message.error('Fail!');
+      //     }
+      //   })
+      // },
 
       login: function () {
         this.user.status = "1";
         Global.loginStatus = 1;
         this.isLogin = 1;
       },
-      logout:function () {
+      logout: function () {
         this.user.status = "0";
         Global.loginStatus = 0;
         this.isLogin = 0;
@@ -118,7 +118,7 @@
 
       },
       queryProperty: function () {
-        
+
       },
       cabinetLayout: function () {
 
@@ -144,7 +144,7 @@
   }
 
   .systemName {
-    color: #371250  ;
+    color: #371250;
     font-size: 40px;
   }
 
